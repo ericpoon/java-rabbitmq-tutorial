@@ -12,7 +12,7 @@ public class Worker {
     Connection connection = factory.newConnection();
 
     Channel channel = connection.createChannel();
-    channel.queueDeclare(TASK_QUEUE_NAME, false, false, false, null);
+    channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null); // durable
     System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
     Consumer consumer = new DefaultConsumer(channel) {
@@ -29,7 +29,7 @@ public class Worker {
       }
     };
 
-    channel.basicConsume(TASK_QUEUE_NAME, true, consumer); // auto acknowledgement
+    channel.basicConsume(TASK_QUEUE_NAME, false, consumer); // manual ack
   }
 
   private static void doWork(String task) {
