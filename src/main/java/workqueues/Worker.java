@@ -9,9 +9,8 @@ public class Worker {
       throws java.io.IOException, java.util.concurrent.TimeoutException {
     ConnectionFactory factory = new ConnectionFactory();
     factory.setHost("localhost");
-    Connection connection = factory.newConnection();
-
-    Channel channel = connection.createChannel();
+    final Connection connection = factory.newConnection();
+    final Channel channel = connection.createChannel();
     channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null); // durable
     System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
@@ -27,11 +26,12 @@ public class Worker {
           doWork(message);
         } finally {
           System.out.println(" [x] Done");
+          channel.basicAck(envelope.getDeliveryTag(), false); // send basic ack
         }
       }
     };
 
-    channel.basicConsume(TASK_QUEUE_NAME, false, consumer); // manual ack
+    channel.basicConsume(TASK_QUEUE_NAME, false, consumer); // manual ack is on
   }
 
   private static void doWork(String task) {
