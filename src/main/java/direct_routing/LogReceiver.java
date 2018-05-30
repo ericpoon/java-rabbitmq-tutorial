@@ -17,7 +17,7 @@ public class LogReceiver {
     channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
     String queueName = channel.queueDeclare().getQueue();
 
-    if (args.length == 0){
+    if (args.length == 0) {
       System.err.println("Usage: LogReceiver [info] [warning] [error]");
       System.exit(1);
     }
