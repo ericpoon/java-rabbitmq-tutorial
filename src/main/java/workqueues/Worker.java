@@ -15,6 +15,8 @@ public class Worker {
     channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null); // durable
     System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
+    channel.basicQos(1);
+
     Consumer consumer = new DefaultConsumer(channel) {
       @Override
       public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
