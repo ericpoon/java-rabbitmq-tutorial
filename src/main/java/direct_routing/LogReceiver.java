@@ -1,4 +1,4 @@
-package routing;
+package direct_routing;
 
 import com.rabbitmq.client.*;
 
