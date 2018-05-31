@@ -56,7 +56,10 @@ public class CalculationServer {
       case "fact":
         return fact(n);
       default:
-        throw new RuntimeException("[unknown procedure] Please use the following:\n\t- fibonacci (fib)\n\t- factorial (fact)\n");
+        throw new RuntimeException("[unknown procedure] Please use the following:"
+            + "\n\t- fibonacci (fib)"
+            + "\n\t- factorial (fact)"
+            + "\n");
     }
   }
 
