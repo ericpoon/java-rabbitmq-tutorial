@@ -16,7 +16,7 @@ public class Client {
     final Channel channel = connection.createChannel();
 
     final String corrId = UUID.randomUUID().toString();
-    String replyQueueName = channel.queueDeclare().getQueue();
+    final String replyQueueName = channel.queueDeclare().getQueue();
     AMQP.BasicProperties props = new AMQP.BasicProperties
         .Builder()
         .correlationId(corrId)
@@ -40,8 +40,14 @@ public class Client {
           throws IOException {
         if (properties.getCorrelationId().equals(corrId)) {
           String message = new String(body, "UTF-8");
-          System.out.println(" [x] Received calculation result: " + message);
-          connection.close();
+          try {
+            int result = Integer.parseInt(message);
+            System.out.println(" [x] Received calculation result: " + result);
+          } catch (NumberFormatException e) {
+            System.err.println(" [x] Error occurred:\n     " + message);
+          } finally {
+            connection.close();
+          }
         }
       }
     };
