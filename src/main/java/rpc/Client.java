@@ -12,8 +12,8 @@ public class Client {
   public static void main(String[] args) throws IOException, TimeoutException {
     ConnectionFactory factory = new ConnectionFactory();
     factory.setHost("localhost");
-    Connection connection = factory.newConnection();
-    Channel channel = connection.createChannel();
+    final Connection connection = factory.newConnection();
+    final Channel channel = connection.createChannel();
 
     final String corrId = UUID.randomUUID().toString();
     String replyQueueName = channel.queueDeclare().getQueue();
@@ -39,9 +39,9 @@ public class Client {
       public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
           throws IOException {
         if (properties.getCorrelationId().equals(corrId)) {
-          String message = new String(body,  "UTF-8");
-          int fibResult = Integer.parseInt(message);
-          System.out.println(" [x] Received calculation result: " + fibResult);
+          String message = new String(body, "UTF-8");
+          System.out.println(" [x] Received calculation result: " + message);
+          connection.close();
         }
       }
     };
